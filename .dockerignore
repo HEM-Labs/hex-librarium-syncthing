@@ -1,0 +1,7 @@
+.git
+.idea
+.vscode
+README.md
+compose.yml
+taskfile.yml
+syncthing-config

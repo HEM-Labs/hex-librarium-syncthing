@@ -1,0 +1,67 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task -l
+
+  # Project management
+
+  update:
+    desc: Update the repo from upstream
+    cmds:
+      - git pull
+
+  version:
+    desc:
+      "Create a release tag (usage: task version -- 1.2.3)"
+    vars:
+      VERSION: '{{.CLI_ARGS}}'
+    requires:
+      vars: [ VERSION ]
+    cmds:
+      - git tag "v{{.VERSION}}"
+
+  push:
+    desc: Push the release tag to GitHub
+    cmds:
+      - git push && git push --tags
+
+  # Librarium
+
+  build:
+    desc: Build the Librarium Syncthing image
+    cmds:
+      - docker compose build librarium-syncthing
+
+  sync:
+    desc: Run Syncthing in the foreground
+    deps:
+      - volume
+    cmds:
+      - docker compose up --build librarium-syncthing
+
+  sync-service:
+    desc: Run Syncthing as a detached service
+    deps:
+      - volume
+    env:
+      SYNCTHING_RESTART: unless-stopped
+    cmds:
+      - docker compose up -d --build librarium-syncthing
+
+  sync-host:
+    desc: Run Syncthing with host networking
+    deps:
+      - volume
+    cmds:
+      - docker compose up --build librarium-syncthing-host
+
+  sync-host-service:
+    desc: Run Syncthing with host networking as a detached service
+    deps:
+      - volume
+    env:
+      SYNCTHING_RESTART: unless-stopped
+    cmds:
+      - docker compose up -d --build librarium-syncthing-host
