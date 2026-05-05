@@ -2,4 +2,5 @@
 .vscode/
 *.iml
 .env
-syncthing-config/
+syncthing-config/*
+!syncthing-config/.gitkeep
