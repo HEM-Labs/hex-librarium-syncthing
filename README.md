@@ -11,8 +11,9 @@ The image seeds Syncthing config only when `/config/config.xml` does not exist. 
 - Syncthing config: `/config`
 - Default GUI port on host: `18384`
 - Default sync port on host: `22300/tcp` and `22300/udp`
+- Default sync port in container: `22000/tcp` and `22000/udp`
 
-Generated config disables Syncthing discovery. Add remote devices with explicit hostname-based addresses such as:
+Generated config disables Syncthing discovery, NAT traversal, and relays. Add remote devices with explicit hostname-based addresses such as:
 
 ```text
 tcp://workstation-a:22300
@@ -48,6 +49,12 @@ To use a different config location:
 
 ```sh
 SYNCTHING_CONFIG_SOURCE=../somewhere/syncthing-config task sync
+```
+
+To change the published host ports:
+
+```sh
+SYNCTHING_GUI_PORT=18385 SYNCTHING_HOST_LISTEN_PORT=22301 task sync
 ```
 
 ## Image

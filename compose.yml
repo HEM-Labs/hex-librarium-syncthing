@@ -11,35 +11,16 @@ services:
       PGID: ${SYNCTHING_PGID:-0}
       TZ: ${TZ:-Etc/UTC}
       HEX_LIBRARIUM: /hex/librarium
-      SYNCTHING_LISTEN_PORT: ${SYNCTHING_LISTEN_PORT:-22300}
+      SYNCTHING_LISTEN_PORT: ${SYNCTHING_LISTEN_PORT:-22000}
       SYNCTHING_GUI_ADDRESS: 0.0.0.0:8384
     volumes:
       - hex-librarium:/hex/librarium
       - ${SYNCTHING_CONFIG_SOURCE:-./syncthing-config}:/config
     ports:
       - "${SYNCTHING_GUI_PORT:-18384}:8384/tcp"
-      - "${SYNCTHING_LISTEN_PORT:-22300}:${SYNCTHING_LISTEN_PORT:-22300}/tcp"
-      - "${SYNCTHING_LISTEN_PORT:-22300}:${SYNCTHING_LISTEN_PORT:-22300}/udp"
-    restart: ${SYNCTHING_RESTART:-no}
-
-  librarium-syncthing-host:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: ${LIBRARIUM_SYNCTHING_IMAGE:-ghcr.io/hem-labs/hex-librarium-syncthing:latest}
-    container_name: hex-librarium-syncthing-host
-    hostname: hex-librarium
-    network_mode: host
-    environment:
-      PUID: ${SYNCTHING_PUID:-0}
-      PGID: ${SYNCTHING_PGID:-0}
-      TZ: ${TZ:-Etc/UTC}
-      HEX_LIBRARIUM: /hex/librarium
-      SYNCTHING_LISTEN_PORT: ${SYNCTHING_LISTEN_PORT:-22300}
-      SYNCTHING_GUI_ADDRESS: 0.0.0.0:${SYNCTHING_GUI_PORT:-18384}
-    volumes:
-      - hex-librarium:/hex/librarium
-      - ${SYNCTHING_CONFIG_SOURCE:-./syncthing-config}:/config
+      - "${SYNCTHING_HOST_LISTEN_PORT:-22300}:${SYNCTHING_LISTEN_PORT:-22000}/tcp"
+      - "${SYNCTHING_HOST_LISTEN_PORT:-22300}:${SYNCTHING_LISTEN_PORT:-22000}/udp"
+    # noinspection ComposeUnknownValues
     restart: ${SYNCTHING_RESTART:-no}
 
 volumes:

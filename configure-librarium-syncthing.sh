@@ -3,7 +3,7 @@ set -eu
 
 CONFIG_FILE="${SYNCTHING_CONFIG_FILE:-/config/config.xml}"
 LIBRARIUM_ROOT="${HEX_LIBRARIUM:-/hex/librarium}"
-LISTEN_PORT="${SYNCTHING_LISTEN_PORT:-22300}"
+LISTEN_PORT="${SYNCTHING_LISTEN_PORT:-22000}"
 GUI_ADDRESS="${SYNCTHING_GUI_ADDRESS:-0.0.0.0:8384}"
 FOLDER_ID="${SYNCTHING_FOLDER_ID:-hex-librarium}"
 FOLDER_LABEL="${SYNCTHING_FOLDER_LABEL:-Hex Librarium}"
@@ -21,6 +21,7 @@ xmlstarlet ed -L \
   -u "/configuration/gui/address" -v "$GUI_ADDRESS" \
   -u "/configuration/options/globalAnnounceEnabled" -v "false" \
   -u "/configuration/options/localAnnounceEnabled" -v "false" \
+  -u "/configuration/options/relaysEnabled" -v "false" \
   -u "/configuration/options/natEnabled" -v "false" \
   -d "/configuration/options/listenAddress" \
   -s "/configuration/options" -t elem -n "listenAddress" -v "tcp://0.0.0.0:${LISTEN_PORT}" \
@@ -38,4 +39,4 @@ xmlstarlet ed -L \
   -i "/configuration/folder[last()]" -t attr -n "fsWatcherEnabled" -v "true" \
   "$CONFIG_FILE"
 
-printf 'Generated Syncthing config at %s with folder %s at %s, GUI %s, sync port %s, discovery disabled\n' "$CONFIG_FILE" "$FOLDER_ID" "$LIBRARIUM_ROOT" "$GUI_ADDRESS" "$LISTEN_PORT"
+printf 'Generated Syncthing config at %s with folder %s at %s, GUI %s, sync port %s, discovery and relays disabled\n' "$CONFIG_FILE" "$FOLDER_ID" "$LIBRARIUM_ROOT" "$GUI_ADDRESS" "$LISTEN_PORT"

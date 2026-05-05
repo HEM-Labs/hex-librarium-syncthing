@@ -29,6 +29,11 @@ tasks:
 
   # Librarium
 
+  volume:
+    desc: Ensure the shared Librarium volume exists
+    cmds:
+      - docker volume create hex-librarium
+
   build:
     desc: Build the Librarium Syncthing image
     cmds:
@@ -49,19 +54,3 @@ tasks:
       SYNCTHING_RESTART: unless-stopped
     cmds:
       - docker compose up -d --build librarium-syncthing
-
-  sync-host:
-    desc: Run Syncthing with host networking
-    deps:
-      - volume
-    cmds:
-      - docker compose up --build librarium-syncthing-host
-
-  sync-host-service:
-    desc: Run Syncthing with host networking as a detached service
-    deps:
-      - volume
-    env:
-      SYNCTHING_RESTART: unless-stopped
-    cmds:
-      - docker compose up -d --build librarium-syncthing-host
