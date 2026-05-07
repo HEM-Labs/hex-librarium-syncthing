@@ -2,6 +2,8 @@
 
 Syncthing wrapper for syncing the shared Hex Librarium Docker volume between machines.
 
+The compose stack runs `librarium-init` before Syncthing so a newly created shared volume has the canonical Librarium directory structure before syncing starts.
+
 The image seeds Syncthing config only when `/config/config.xml` does not exist. Existing config is treated as user-owned runtime state and is left untouched.
 
 ## Contract
@@ -16,8 +18,7 @@ The image seeds Syncthing config only when `/config/config.xml` does not exist. 
 Generated config disables Syncthing discovery, NAT traversal, and relays. Add remote devices with explicit hostname-based addresses such as:
 
 ```text
-tcp://workstation-a:22300
-quic://workstation-a:22300
+tcp://workstation-a:22300, quic://workstation-a:22300
 ```
 
 ## Run

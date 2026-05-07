@@ -1,4 +1,12 @@
 services:
+  librarium-init:
+    image: ${LIBRARIUM_INIT_IMAGE:-ghcr.io/hem-labs/hex-librarium-init:latest}
+    environment:
+      HEX_LIBRARIUM: /hex/librarium
+    volumes:
+      - hex-librarium:/hex/librarium
+    restart: "no"
+
   librarium-syncthing:
     build:
       context: ./docker
@@ -6,6 +14,9 @@ services:
     image: ${LIBRARIUM_SYNCTHING_IMAGE:-ghcr.io/hem-labs/hex-librarium-syncthing:latest}
     container_name: hex-librarium-syncthing
     hostname: hex-librarium-syncthing
+    depends_on:
+      librarium-init:
+        condition: service_completed_successfully
     environment:
       PUID: ${SYNCTHING_PUID:-0}
       PGID: ${SYNCTHING_PGID:-0}
