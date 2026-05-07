@@ -1,14 +1,20 @@
 name: Publish Librarium Syncthing Image
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Semantic version to release, without the leading v"
+        required: true
+        type: string
 
 permissions:
-  contents: read
+  contents: write
   packages: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -17,12 +23,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Resolve image name
-        id: image
+      - name: Validate release
         shell: bash
-        run: |
-          echo "name=ghcr.io/hem-labs/hex-librarium-syncthing" >> "$GITHUB_OUTPUT"
+        run: bash .github/scripts/validate-release.sh "${{ inputs.version }}"
+
+      - name: Create release commit and tag
+        shell: bash
+        run: bash .github/scripts/create-release.sh "${{ inputs.version }}"
+
+      - name: Resolve image metadata
+        id: release
+        shell: bash
+        run: bash .github/scripts/resolve-image-metadata.sh "${{ inputs.version }}"
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -31,21 +46,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ steps.image.outputs.name }}
-          tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha
-
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: ./docker
           file: ./docker/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.release.outputs.tags }}
+          labels: ${{ steps.release.outputs.labels }}
+
+      - name: Push release commit and tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin HEAD:master
+          git push origin "v${{ steps.release.outputs.version }}"

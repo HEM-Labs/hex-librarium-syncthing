@@ -13,17 +13,12 @@ tasks:
       - git pull
 
   version:
-    desc:
-      "Create a release tag (usage: task version -- 1.2.3)"
-    vars:
-      VERSION: '{{.CLI_ARGS}}'
-    requires:
-      vars: [ VERSION ]
+    desc: Show the current project version
     cmds:
-      - git tag "v{{.VERSION}}"
+      - cat VERSION
 
   push:
-    desc: Push the release tag to GitHub
+    desc: Push commits and tags to GitHub
     cmds:
       - git push && git push --tags
 
