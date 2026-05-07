@@ -29,6 +29,30 @@ tcp://workstation-a:22300, quic://workstation-a:22300
 
 ## Run
 
+For end users on Windows, use the batch files to pull and run the published images:
+
+```bat
+sync.bat
+```
+
+This runs Syncthing in the foreground. Press `Ctrl+C` to stop the container.
+
+Detached service mode:
+
+```bat
+start-sync.bat
+```
+
+Stop detached service mode:
+
+```bat
+end-sync.bat
+```
+
+The batch files use the same `compose.yml` as development, but run with `--no-build` so Docker uses the published GHCR images.
+
+For local development:
+
 ```sh
 docker volume create hex-librarium
 docker compose up --build librarium-syncthing
@@ -45,7 +69,13 @@ This runs in the foreground. Press `Ctrl+C` to stop the container.
 Detached service mode:
 
 ```sh
-task sync-service
+task start-sync
+```
+
+Stop detached service mode:
+
+```sh
+task end-sync
 ```
 
 ## Config

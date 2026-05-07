@@ -41,7 +41,7 @@ tasks:
     cmds:
       - docker compose up --build librarium-syncthing
 
-  sync-service:
+  start-sync:
     desc: Run Syncthing as a detached service
     deps:
       - volume
@@ -50,7 +50,7 @@ tasks:
     cmds:
       - docker compose up -d --build librarium-syncthing
 
-  sync-service-stop:
+  end-sync:
     desc: Stop the detached Syncthing service
     cmds:
       - docker compose stop librarium-syncthing
