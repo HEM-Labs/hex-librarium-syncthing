@@ -54,3 +54,8 @@ tasks:
       SYNCTHING_RESTART: unless-stopped
     cmds:
       - docker compose up -d --build librarium-syncthing
+
+  sync-service-stop:
+    desc: Stop the detached Syncthing service
+    cmds:
+      - docker compose stop librarium-syncthing
