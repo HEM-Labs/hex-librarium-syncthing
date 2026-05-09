@@ -11,6 +11,8 @@ This image packages Syncthing via the LinuxServer.io Syncthing container image. 
 
 The compose stack runs `librarium-init` before Syncthing so a newly created shared volume has the canonical Librarium directory structure before syncing starts.
 
+The Syncthing wrapper also ensures the Syncthing folder marker exists at `/hex/librarium/.stfolder`. This marker is Syncthing-owned runtime metadata, not part of the Hex Librarium directory contract, and lets Syncthing safely attach to either a fresh Librarium volume or an existing one.
+
 The image seeds Syncthing config only when `/config/config.xml` does not exist inside the container. By default, that container path is backed by the project-local `./syncthing-config` directory. Existing config is treated as user-owned runtime state and is left untouched.
 
 ## Contract
@@ -18,6 +20,7 @@ The image seeds Syncthing config only when `/config/config.xml` does not exist i
 - Synced volume: `hex-librarium`
 - Container mount path: `/hex/librarium`
 - Syncthing config container path: `/config`
+- Syncthing folder marker: `/hex/librarium/.stfolder`
 - Default project-local config directory: `./syncthing-config`
 - Default Syncthing device name: `hex-librarium-syncthing`
 - Syncthing GUI container port: `8384/tcp`
@@ -37,6 +40,8 @@ tcp://workstation-a:22300, quic://workstation-a:22300
 This image keeps the LinuxServer.io Syncthing runtime model intact where possible. Syncthing listens on `8384/tcp` inside the container, and `compose.yml` maps the project host default, `18384/tcp`, to that internal port. Treat Syncthing log URLs as container-local; from the host, use the configured host port.
 
 The container runs as `root:root` by default because it writes to the shared `hex-librarium` Docker volume used by other Hex components. This avoids host-specific UID/GID coordination for the shared volume. This is container user configuration, not Docker `--privileged` mode. Only run this service in trusted private environments unless you deliberately harden the deployment.
+
+Syncthing uses the folder marker to verify that the configured folder is present before scanning. Creating `.stfolder` in a fresh or existing Librarium volume matches what Syncthing creates when a folder is added through the web UI. Syncthing treats this marker as an internal file and does not sync it to other devices.
 
 ## Run
 

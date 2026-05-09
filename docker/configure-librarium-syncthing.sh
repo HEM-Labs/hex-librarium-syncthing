@@ -9,6 +9,7 @@ FOLDER_ID="${SYNCTHING_FOLDER_ID:-hex-librarium}"
 FOLDER_LABEL="${SYNCTHING_FOLDER_LABEL:-Hex Librarium}"
 
 mkdir -p "$LIBRARIUM_ROOT"
+mkdir -p "$LIBRARIUM_ROOT/.stfolder"
 
 if [ -f "$CONFIG_FILE" ]; then
   printf 'Using existing Syncthing config at %s\n' "$CONFIG_FILE"

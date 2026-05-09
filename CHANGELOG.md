@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.1] - 2026-05-09
+
+### Fixed
+
+- Ensure the `.stfolder` marker exists before startup so fresh Librarium volumes can complete the initial scan.
+
+---
+
 ## [0.2.0] - 2026-05-09
 
 ### Added
