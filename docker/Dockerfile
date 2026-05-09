@@ -12,4 +12,4 @@ ENV HEX_LIBRARIUM=/hex/librarium \
     SYNCTHING_FOLDER_ID=hex-librarium \
     SYNCTHING_FOLDER_LABEL="Hex Librarium"
 
-EXPOSE 18384/tcp 22300/tcp 22300/udp
+EXPOSE 8384/tcp 22300/tcp 22300/udp

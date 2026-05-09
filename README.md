@@ -20,17 +20,23 @@ The image seeds Syncthing config only when `/config/config.xml` does not exist i
 - Syncthing config container path: `/config`
 - Default project-local config directory: `./syncthing-config`
 - Default Syncthing device name: `hex-librarium-syncthing`
-- Default GUI port: `18384`
+- Syncthing GUI container port: `8384/tcp`
+- Default host GUI port: `18384/tcp`
 - Default sync port: `22300/tcp` and `22300/udp`
 
-Syncthing runs as `root:root` (privileged mode) inside the container by default through `PUID=0` and `PGID=0`. The shared Librarium volume is root-owned by the other Hex Librarium components, so this avoids requiring host-specific user and group permission changes on the mounted volume.  
-This component is intended for trusted, containerized, private machine-to-machine sync, not as a public-facing service.
+Syncthing runs as `root:root` inside the container by default through `PUID=0` and `PGID=0`. See [Runtime Notes](#runtime-notes) for rationale.
 
 Generated config disables Syncthing discovery, NAT traversal, and relays. Add remote devices with explicit hostname-based addresses such as:
 
 ```text
 tcp://workstation-a:22300, quic://workstation-a:22300
 ```
+
+## Runtime Notes
+
+This image keeps the LinuxServer.io Syncthing runtime model intact where possible. Syncthing listens on `8384/tcp` inside the container, and `compose.yml` maps the project host default, `18384/tcp`, to that internal port. Treat Syncthing log URLs as container-local; from the host, use the configured host port.
+
+The container runs as `root:root` by default because it writes to the shared `hex-librarium` Docker volume used by other Hex components. This avoids host-specific UID/GID coordination for the shared volume. This is container user configuration, not Docker `--privileged` mode. Only run this service in trusted private environments unless you deliberately harden the deployment.
 
 ## Run
 
@@ -55,6 +61,12 @@ stop.bat
 ```
 
 The batch files use the same `compose.yml` as development, but run with `--no-build` so Docker uses the published GHCR images.
+
+By default, the Syncthing GUI is available on the host at:
+
+```text
+http://localhost:18384/
+```
 
 ## Develop
 
@@ -99,6 +111,8 @@ To change the ports:
 ```sh
 SYNCTHING_GUI_PORT=18385 SYNCTHING_LISTEN_PORT=22301 task run
 ```
+
+`SYNCTHING_GUI_PORT` changes only the host-facing port. Inside the container, Syncthing keeps the LinuxServer.io default GUI port, `8384/tcp`, and the compose file maps the chosen host port to that internal port. Syncthing log messages may therefore mention `127.0.0.1:8384`; use the configured host port from outside the container.
 
 ## Image
 

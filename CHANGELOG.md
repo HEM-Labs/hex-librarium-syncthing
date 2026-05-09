@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [0.2.0] - 2026-05-09
+
 ### Added
 
 - Added third-party notices for Syncthing and the LinuxServer.io Syncthing image.
@@ -15,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Renamed interactive and service commands to `run`, `start`, and `stop`.
+- Restored the LinuxServer.io default Syncthing GUI container port, `8384/tcp`, and mapped the project default host port `18384/tcp` to it.
 
 ---
 

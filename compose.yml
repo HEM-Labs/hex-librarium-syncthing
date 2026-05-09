@@ -24,12 +24,11 @@ services:
       HEX_LIBRARIUM: /hex/librarium
       SYNCTHING_DEVICE_NAME: ${SYNCTHING_DEVICE_NAME:-hex-librarium-syncthing}
       SYNCTHING_LISTEN_PORT: ${SYNCTHING_LISTEN_PORT:-22300}
-      SYNCTHING_GUI_ADDRESS: 0.0.0.0:${SYNCTHING_GUI_PORT:-18384}
     volumes:
       - hex-librarium:/hex/librarium
       - ${SYNCTHING_CONFIG_SOURCE:-./syncthing-config}:/config
     ports:
-      - "${SYNCTHING_GUI_PORT:-18384}:${SYNCTHING_GUI_PORT:-18384}/tcp"
+      - "${SYNCTHING_GUI_PORT:-18384}:8384/tcp"
       - "${SYNCTHING_LISTEN_PORT:-22300}:${SYNCTHING_LISTEN_PORT:-22300}/tcp"
       - "${SYNCTHING_LISTEN_PORT:-22300}:${SYNCTHING_LISTEN_PORT:-22300}/udp"
     # noinspection ComposeUnknownValues

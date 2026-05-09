@@ -5,7 +5,6 @@ CONFIG_FILE="${SYNCTHING_CONFIG_FILE:-/config/config.xml}"
 LIBRARIUM_ROOT="${HEX_LIBRARIUM:-/hex/librarium}"
 DEVICE_NAME="${SYNCTHING_DEVICE_NAME:-hex-librarium-syncthing}"
 LISTEN_PORT="${SYNCTHING_LISTEN_PORT:-22300}"
-GUI_ADDRESS="${SYNCTHING_GUI_ADDRESS:-0.0.0.0:18384}"
 FOLDER_ID="${SYNCTHING_FOLDER_ID:-hex-librarium}"
 FOLDER_LABEL="${SYNCTHING_FOLDER_LABEL:-Hex Librarium}"
 
@@ -21,7 +20,6 @@ syncthing generate --home=/config >/dev/null
 xmlstarlet ed -L \
   -d "/configuration/device[1]/@name" \
   -i "/configuration/device[1]" -t attr -n "name" -v "$DEVICE_NAME" \
-  -u "/configuration/gui/address" -v "$GUI_ADDRESS" \
   -u "/configuration/options/globalAnnounceEnabled" -v "false" \
   -u "/configuration/options/localAnnounceEnabled" -v "false" \
   -u "/configuration/options/relaysEnabled" -v "false" \
@@ -42,4 +40,4 @@ xmlstarlet ed -L \
   -i "/configuration/folder[last()]" -t attr -n "fsWatcherEnabled" -v "true" \
   "$CONFIG_FILE"
 
-printf 'Generated Syncthing config at %s for device %s with folder %s at %s, GUI %s, sync port %s, discovery and relays disabled\n' "$CONFIG_FILE" "$DEVICE_NAME" "$FOLDER_ID" "$LIBRARIUM_ROOT" "$GUI_ADDRESS" "$LISTEN_PORT"
+printf 'Generated Syncthing config at %s for device %s with folder %s at %s, sync port %s, discovery and relays disabled\n' "$CONFIG_FILE" "$DEVICE_NAME" "$FOLDER_ID" "$LIBRARIUM_ROOT" "$LISTEN_PORT"
