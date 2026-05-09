@@ -54,3 +54,8 @@ tasks:
     desc: Stop the detached Syncthing service
     cmds:
       - docker compose stop librarium-syncthing
+
+  down:
+    desc: Remove the Syncthing stack without deleting the Librarium volume
+    cmds:
+      - docker compose down

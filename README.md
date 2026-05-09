@@ -65,6 +65,14 @@ Stop detached service mode:
 stop.bat
 ```
 
+Remove the Syncthing stack when it is no longer needed:
+
+```bat
+down.bat
+```
+
+This removes the Syncthing containers and Compose network. It does not delete the shared `hex-librarium` Docker volume or the project-local `./syncthing-config` directory.
+
 The batch files use the same `compose.yml` as development, but run with `--no-build` so Docker uses the published GHCR images.
 
 By default, the Syncthing GUI is available on the host at:
@@ -89,6 +97,7 @@ Useful development commands:
 task build
 task start
 task stop
+task down
 task update
 task version
 ```
