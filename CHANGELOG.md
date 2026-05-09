@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added third-party notices for Syncthing and the LinuxServer.io Syncthing image.
+
 ### Changed
 
 - Renamed interactive and service commands to `run`, `start`, and `stop`.

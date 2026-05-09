@@ -7,6 +7,8 @@
 
 Syncthing wrapper for syncing the shared Hex Librarium Docker volume between machines.
 
+This image packages Syncthing via the LinuxServer.io Syncthing container image. See [THIRD_PARTY.md](THIRD_PARTY.md) for upstream attribution.
+
 The compose stack runs `librarium-init` before Syncthing so a newly created shared volume has the canonical Librarium directory structure before syncing starts.
 
 The image seeds Syncthing config only when `/config/config.xml` does not exist inside the container. By default, that container path is backed by the project-local `./syncthing-config` directory. Existing config is treated as user-owned runtime state and is left untouched.
