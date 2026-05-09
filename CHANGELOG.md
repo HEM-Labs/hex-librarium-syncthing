@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added third-party notices for Syncthing and the LinuxServer.io Syncthing image.
+- Documented why Syncthing runs in privileged mode in the container.
 
 ### Changed
 

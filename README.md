@@ -23,6 +23,9 @@ The image seeds Syncthing config only when `/config/config.xml` does not exist i
 - Default GUI port: `18384`
 - Default sync port: `22300/tcp` and `22300/udp`
 
+Syncthing runs as `root:root` (privileged mode) inside the container by default through `PUID=0` and `PGID=0`. The shared Librarium volume is root-owned by the other Hex Librarium components, so this avoids requiring host-specific user and group permission changes on the mounted volume.  
+This component is intended for trusted, containerized, private machine-to-machine sync, not as a public-facing service.
+
 Generated config disables Syncthing discovery, NAT traversal, and relays. Add remote devices with explicit hostname-based addresses such as:
 
 ```text
