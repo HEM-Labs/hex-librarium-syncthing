@@ -32,7 +32,7 @@ tcp://workstation-a:22300, quic://workstation-a:22300
 For end users on Windows, use the batch files to pull and run the published images:
 
 ```bat
-sync.bat
+run.bat
 ```
 
 This runs Syncthing in the foreground. Press `Ctrl+C` to stop the container.
@@ -40,42 +40,41 @@ This runs Syncthing in the foreground. Press `Ctrl+C` to stop the container.
 Detached service mode:
 
 ```bat
-start-sync.bat
+start.bat
 ```
 
 Stop detached service mode:
 
 ```bat
-end-sync.bat
+stop.bat
 ```
 
 The batch files use the same `compose.yml` as development, but run with `--no-build` so Docker uses the published GHCR images.
 
-For local development:
+## Develop
+
+Install [Task](https://taskfile.dev/) and Docker, then run:
 
 ```sh
-docker volume create hex-librarium
-docker compose up --build librarium-syncthing
+task run
 ```
 
-Or with Task:
+This runs Syncthing in the foreground. Press `Ctrl+C` to stop the container.
+
+Useful development commands:
 
 ```sh
-task sync
+task build
+task start
+task stop
+task update
+task version
 ```
 
-This runs in the foreground. Press `Ctrl+C` to stop the container.
-
-Detached service mode:
+Create the shared Librarium volume manually when needed:
 
 ```sh
-task start-sync
-```
-
-Stop detached service mode:
-
-```sh
-task end-sync
+task volume
 ```
 
 ## Config
@@ -87,13 +86,13 @@ The `./syncthing-config` directory is checked in as a placeholder, but its gener
 To use a different config location:
 
 ```sh
-SYNCTHING_CONFIG_SOURCE=../somewhere/syncthing-config task sync
+SYNCTHING_CONFIG_SOURCE=../somewhere/syncthing-config task run
 ```
 
 To change the ports:
 
 ```sh
-SYNCTHING_GUI_PORT=18385 SYNCTHING_LISTEN_PORT=22301 task sync
+SYNCTHING_GUI_PORT=18385 SYNCTHING_LISTEN_PORT=22301 task run
 ```
 
 ## Image
